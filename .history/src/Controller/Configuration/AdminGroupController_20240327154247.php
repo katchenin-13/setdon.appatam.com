@@ -33,11 +33,6 @@ class  AdminGroupController extends BaseController
                 'href' => $this->generateUrl('app_utilisateur_employe_index')
             ],
             [
-                'label' => 'Utilisateurs Actifs ',
-                'icon' => 'bi bi-list',
-                'href' => $this->generateUrl('app_utilisateur_utilisateur_index')
-            ],
-            [
                 'label' => 'Liste des profils utilisateur ',
                 'icon' => 'bi bi-list',
                 'href' => $this->generateUrl('app_utilisateur_groupe_index')
