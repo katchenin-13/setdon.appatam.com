@@ -1,0 +1,224 @@
+{% extends 'base-layout.html.twig' %}
+
+{% block title %}Liste des agendas
+{% endblock %}
+{% block header %}agendas
+{% endblock %}
+{% block breadcrumb %}
+{% endblock %}
+{% block stylesheets %}
+<link href="assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
+
+</style>
+{% endblock %}
+{% block body %}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class=" container-xxl ">
+        <!--begin::Card-->
+        <div class="card ">
+
+            <div class="card-header card-header-sm">
+                <h3 class="card-title"> Agenda du ministre</h3>
+            
+                <div class="card-toolbar">
+                    <a href="{{ path('app_config_audience_index') }}" class="btn btn-main btn-sm">
+                        <i class="bi bi-list text-light"></i>
+                        Liste des audience
+                    </a>
+                    &nbsp;
+            
+                    &nbsp;
+                   
+                    <a href="{{ path('app_gestion_event_new') }}" class="btn btn-main btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#exampleModalSizeLg2">
+                        <i class="bi bi-plus-square text-light"></i>
+                        Enregistrer un évènement
+                    </a>
+                </div>
+            </div>
+            <!--begin::Card header-->
+            
+            <!--end::Card header-->
+
+            <!--begin::Card body-->
+            <div class="card-body">
+                <!--begin::Calendar-->
+            <div id="kt_docs_fullcalendar_basic" class="fc fc-media-screen fc-direction-ltr fc-theme-standard">
+                <!--end::Calendar-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Card-->
+
+        <!--begin::Modals-->
+       
+        <div class="modal fade" id="kt_modal_view_event" tabindex="-1" aria-hidden="true">
+            <!--begin::Modal dialog-->
+            <div class="modal-dialog modal-dialog-centered mw-650px">
+                <!--begin::Modal content-->
+                <div class="modal-content">
+                    <!--begin::Modal header-->
+                    <div class="modal-header border-0 justify-content-end">
+                        <!--begin::Edit-->
+                        <div class="btn btn-icon btn-sm btn-color-gray-400 btn-active-icon-primary me-2"
+                            data-bs-toggle="tooltip" data-bs-dismiss="click" title="Edit Event"
+                            id="kt_modal_view_event_edit">
+                            <i class="ki-outline ki-pencil fs-2"></i>
+                        </div>
+                        <!--end::Edit-->
+
+                        <!--begin::Edit-->
+                        <div class="btn btn-icon btn-sm btn-color-gray-400 btn-active-icon-danger me-2"
+                            data-bs-toggle="tooltip" data-bs-dismiss="click" title="Delete Event"
+                            id="kt_modal_view_event_delete">
+                            <i class="ki-outline ki-trash fs-2"></i>
+                        </div>
+                        <!--end::Edit-->
+
+                        <!--begin::Close-->
+                        <div class="btn btn-icon btn-sm btn-color-gray-500 btn-active-icon-primary"
+                            data-bs-toggle="tooltip" data-bs-dismiss="click" title="Hide Event" data-bs-dismiss="modal">
+                            <i class="ki-outline ki-cross fs-2x"></i>
+                        </div>
+                        <!--end::Close-->
+                    </div>
+                    <!--end::Modal header-->
+
+                    <!--begin::Modal body-->
+                    <div class="modal-body pt-0 pb-20 px-lg-17">
+                        <!--begin::Row-->
+                        <div class="d-flex">
+                            <!--begin::Icon-->
+                            <i class="ki-outline ki-calendar-8 fs-1 text-muted me-5"></i>
+                            <!--end::Icon-->
+
+                            <div class="mb-9">
+                                <!--begin::Event name-->
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="fs-3 fw-bold me-3" data-kt-calendar="event_name"></span> <span
+                                        class="badge badge-light-success" data-kt-calendar="all_day"></span>
+                                </div>
+                                <!--end::Event name-->
+
+                                <!--begin::Event description-->
+                                <div class="fs-6" data-kt-calendar="event_description"></div>
+                                <!--end::Event description-->
+                            </div>
+                        </div>
+                        <!--end::Row-->
+
+                        <!--begin::Row-->
+                        <div class="d-flex align-items-center mb-2">
+                            <!--begin::Bullet-->
+                            <span class="bullet bullet-dot h-10px w-10px bg-success ms-2 me-7"></span>
+                            <!--end::Bullet-->
+
+                            <!--begin::Event start date/time-->
+                            <div class="fs-6"><span class="fw-bold">Starts</span> <span
+                                    data-kt-calendar="event_start_date"></span></div>
+                            <!--end::Event start date/time-->
+                        </div>
+                        <!--end::Row-->
+
+                        <!--begin::Row-->
+                        <div class="d-flex align-items-center mb-9">
+                            <!--begin::Bullet-->
+                            <span class="bullet bullet-dot h-10px w-10px bg-danger ms-2 me-7"></span>
+                            <!--end::Bullet-->
+
+                            <!--begin::Event end date/time-->
+                            <div class="fs-6"><span class="fw-bold">Ends</span> <span
+                                    data-kt-calendar="event_end_date"></span></div>
+                            <!--end::Event end date/time-->
+                        </div>
+                        <!--end::Row-->
+
+                        <!--begin::Row-->
+                        <div class="d-flex align-items-center">
+                            <!--begin::Icon-->
+                            <i class="ki-outline ki-geolocation fs-1 text-muted me-5"></i>
+                            <!--end::Icon-->
+
+                            <!--begin::Event location-->
+                            <div class="fs-6" data-kt-calendar="event_location"></div>
+                            <!--end::Event location-->
+                        </div>
+                        <!--end::Row-->
+                    </div>
+                    <!--end::Modal body-->
+                </div>
+            </div>
+        </div>
+        <!--end::Modal - New Product--><!--end::Modals-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Post-->
+
+{% endblock %}
+{% block java %} 
+<script src="assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
+<script>
+  
+  
+    const element = document.getElementById("kt_docs_fullcalendar_basic");
+
+    var todayDate = moment().startOf("day");
+    var YM = todayDate.format("YYYY-MM");
+    var YESTERDAY = todayDate.clone().subtract(1, "day").format("YYYY-MM-DD");
+    var TODAY = todayDate.format("YYYY-MM-DD");
+    var TOMORROW = todayDate.clone().add(1, "day").format("YYYY-MM-DD");
+
+    var calendarEl = document.getElementById("kt_docs_fullcalendar_basic");
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,listMonth"
+        },
+
+        height: 800,
+        contentHeight: 780,
+        aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
+
+        nowIndicator: true,
+        now: TODAY + "T09:25:00", // just for demo
+
+        views: {
+            dayGridMonth: { buttonText: "Mois" },
+            timeGridWeek: { buttonText: "week" },
+            timeGridDay: { buttonText: "day" }
+        },
+
+        initialView: "dayGridMonth",
+        initialDate: TODAY,
+
+        editable: true,
+        dayMaxEvents: true, // allow "more" link when too many events
+        navLinks: true,
+      
+        events: {{ data | raw }},
+
+        eventContent: function (info) {
+            var element = $(info.el);
+
+            if (info.event.extendedProps && info.event.extendedProps.description) {
+                if (element.hasClass("fc-day-grid-event")) {
+                    element.data("content", info.event.extendedProps.description);
+                    element.data("placement", "top");
+                    KTApp.initPopover(element);
+                } else if (element.hasClass("fc-time-grid-event")) {
+                    element.find(".fc-title").append('<div class="fc - description">' + info.event.extendedProps.description + "</div>");
+                } else if (element.find(".fc-list-item-title").lenght !== 0) {
+                    element.find(".fc-list-item-title").append('<div class="fc - description">'+ info.event.extendedProps.description + "</div>");
+                }
+            }
+        }
+    });
+
+    calendar.render();
+</script>
+{% endblock %}
+

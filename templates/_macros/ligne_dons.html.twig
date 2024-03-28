@@ -1,0 +1,57 @@
+{% macro colonne(fieldon) %}
+
+	<div class="row-colonne  ">
+		{#{{ dump(redaction.children.path.vars.data) }}#}
+		<div class="row">
+<div class="col-2">{{ form_row(fieldon.typedonsfiel,{'attr':{'class':'typedon'}}) }}</div>
+
+			<div class="col-1 ">{{ form_row(fieldon.qte,{'attr':{'class':'qte'}}) }}</div>
+			<div class="col-2 ">{{ form_row(fieldon.naturedon,{'attr':{'class':'naturedon'}}) }}</div>
+			<div class="col-3 ">{{ form_row(fieldon.motifdon) }}</div>
+			<div class="col-2 ">{{ form_row(fieldon.montantdon) }}</div>
+			
+
+
+			<div class="col-1 del-col" data-parent=".row-colonne"></div>
+		</div>
+
+	</div>
+
+{% endmacro  %}
+
+
+{% macro prototype_ligne_colonne(form) %}
+<div class="list-colonne" data-prototype="{{ _self.colonne(form.fieldon.vars.prototype, 1)|e }}"></div>
+
+
+	<div class="row py-2 mb-4 main" style="border-bottom:3px solid white;background: #3a4049">
+
+
+		<div class="col-9">
+			<h3 class="text-white">LISTE DES DONS</h3>
+		</div>
+		<div class="col-3">
+			<button type="button" data-protoname="__name__" class="btn btn-default add_line btn-xs" id="add_ligne" data-protoclass=".list-colonne" data-container=".column-container">
+				<i class="fa fa-plus"></i>
+				Ajouter
+			</button>
+		</div>
+
+	</div>
+	<div class="row mb-4">
+		<div class="col-2">type</div>
+		<div class="col-2">Qte</div>
+		<div class="col-2">Nature</div>
+		<div class="col-3">Motif</div>
+		<div class="col-2">Montant</div>
+		<div class="col-1 del-col" data-parent=".row-colonne"></div>
+	</div>
+
+
+	<div class="column-container proto-container" data-childclass="">
+		{% for item in form.fieldon %}
+
+			{{ _self.colonne(item|e) }}
+		{% endfor %}
+	</div>
+{% endmacro %}

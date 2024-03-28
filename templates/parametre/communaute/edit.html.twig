@@ -1,0 +1,431 @@
+
+{% block page_content %}
+{% form_theme form 'widget/fields-block.html.twig' %}
+{% from '_macros/ligne_nompf.html.twig' import prototype_ligne_colonne_nom %}
+{% from '_macros/ligne_numeropf.html.twig' import prototype_ligne_colonne_numero %}
+{% from '_macros/ligne_emailpf.html.twig' import prototype_ligne_colonne_email %}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Création de la Communauté</h5>
+    <div class="btn btn-icon btn-sm  ms-2" data-bs-dismiss="modal" aria-label="Close">
+        <span class="svg-icon svg-icon-2x text-white">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)"
+                    fill="currentColor"></rect>
+                <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)"
+                    fill="currentColor"></rect>
+            </svg>
+        </span>
+    </div>
+</div>
+{{ form_start(form, {'attr': {'role':'form', 'class': 'form'}}) }}
+<div class="modal-body">
+   
+    {{ include('_includes/ajax/response.html.twig') }}
+    {# {{ form_widget(form) }} #}
+    {# <div class="rouge">
+        Information sur la communauté
+    </div> #}
+
+    <div class="row">
+        <div class="col-md-4">{{ form_row(form.libelle) }}</div>
+        <div class="col-md-4">{{ form_row(form.categorie) }}</div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 </div>
+   <div class="row">
+
+        <div class="col-md-8">{{ form_row(form.localite) }}</div>
+        <div class="col-md-4">{{ form_row(form.nbestmember) }}</div>
+    </div>
+
+    <br>
+    
+<br>
+{{ prototype_ligne_colonne_nom(form) }}
+<br>
+<br>
+{{ prototype_ligne_colonne_numero(form) }}
+<br>
+<br>
+{{ prototype_ligne_colonne_email(form) }}
+<br>
+
+
+
+</div>
+<div class="modal-footer">
+    {# {{ include('_includes/ajax/loader.html.twig') }} #}
+    <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Annuler</button>
+    <button type="submit" class="btn btn-main btn-ajax btn-sm"><span
+            class="spinner-border d-none  spinner-ajax spinner-border-sm" role="status" aria-hidden="true"></span>
+        Valider</button>
+</div>
+{{ form_end(form) }}
+{% endblock %}
+
+{# {% block javascripts_inline %}
+<script>
+    $(function () {
+        init_select2('select');
+    });
+
+</script>
+{% endblock %} #}
+
+{% block java %}
+<script>
+
+
+
+    $(function () {
+        init_select2('select');
+    });
+
+    $(function () {
+                const $container = $('.proto-container_nom');
+
+                var index = $container.find('.row-colonne_nom').length;
+
+
+                $(document).on('select2:select', '.select-type', function (e) {
+                        const $this = $(this);
+                        let field_str = $this.find('option:selected').attr('data-require-fields');
+                        const $parent = $this.closest('.row-colonne_nom');
+                        let fields = [];
+                        if (typeof field_str != 'undefined') {
+                            fields = field_str.split(',');
+                            for (let field of fields) {
+                                $parent.find('.' + field).removeClass('d-none');
+                            }
+                        } else {
+                                $parent.find('.source,.valeurs').addClass('d-none');
+                        }
+                });
+
+
+                const $addLink = $('.add_line_nom');
+                $addLink.click(function (e) {
+                        const $this = $(this);
+                        const proto_class = $this.attr('data-protoclass');
+                        const name = $this.attr('data-protoname');
+                        const $container = $($this.attr('data-container'));
+
+
+                        addLine($container, name, proto_class);
+
+
+                        e.preventDefault();
+                        
+                        // évite qu'un # apparaisse dans l'URL
+                });
+
+                if (index > 0) {
+                        $container.children('.row-colonne_nom').each(function () {
+                            const $this = $(this);
+                            addDeleteLink($this);
+                            const $select = $this.find("select");
+
+
+                            $select.each(function () {
+                                const $this = $(this);
+                                init_select2($this, null, '#exampleModalSizeLg2');
+                                if ($this.hasClass('select-type')) {
+                                    let field_str = $this.find('option:selected').attr('data-require-fields');
+                                    const $parent = $this.closest('.row-colonne_nom');
+                                    let fields = [];
+                                    if (typeof field_str != 'undefined') {
+                                        fields = field_str.split(',');
+                                        for (let field of fields) {
+                                        $parent.find('.' + field).removeClass('d-none');
+                                        }
+                                    } else {
+                                        $parent.find('.source,.valeurs').addClass('d-none');
+                                    }
+                                }
+                            });
+
+                        });
+
+                }
+
+
+                // La fonction qui ajoute un formulaire Categorie
+                function addLine($container, name, proto_class) {
+                // Dans le contenu de l'attribut « data-prototype », on remplace :
+                // - le texte "__name__label__" qu'il contient par le label du champ
+                // - le texte "__name__" qu'il contient par le numéro du champ
+
+                var $prototype = $($(proto_class).attr('data-prototype').replace(new RegExp(name + 'label__', 'g'), 'Colonne ' + (
+                index + 1
+                )).replace(new RegExp(name, 'g'), index));
+
+
+                init_select2($prototype.find('select'), null, '#exampleModalSizeLg2');
+
+
+                // On ajoute au prototype un lien pour pouvoir supprimer la prestation
+                addDeleteLink($prototype, name);
+                // On ajoute le prototype modifié à la fin de la balise <div>
+                $container.append($prototype);
+
+                index++;
+            }
+
+
+            function addDeleteLink($prototype, name = null) { // Création du lien
+            $deleteLink = $('<a href="#" class="btn btn-danger btn-xs" style="margin-top: 0px;"><span class="fa fa-trash"></span></a>');
+            // Ajout du lien
+            $prototype.find(".del-col_nom").append($deleteLink);
+
+
+            // Ajout du listener sur le clic du lien
+            $deleteLink.click(function (e) {
+            const $this = $(this);
+            const $parent = $this.closest($this.parent('div').attr('data-parent'));
+
+            // console.log($(this).attr('data-parent'), $(this));
+            $parent.remove();
+
+            if (index > 0) {
+            index -= 1;
+            }
+
+            e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+            });
+       }
+
+
+    })
+    
+     $(function () {
+                const $container = $('.proto-container_numero');
+
+                var index = $container.find('.row-colonne_numero').length;
+
+
+                $(document).on('select2:select', '.select-type', function (e) {
+                        const $this = $(this);
+                        let field_str = $this.find('option:selected').attr('data-require-fields');
+                        const $parent = $this.closest('.row-colonne_numero');
+                        let fields = [];
+                        if (typeof field_str != 'undefined') {
+                            fields = field_str.split(',');
+                            for (let field of fields) {
+                                $parent.find('.' + field).removeClass('d-none');
+                            }
+                        } else {
+                                $parent.find('.source,.valeurs').addClass('d-none');
+                        }
+                });
+
+
+                const $addLink = $('.add_line_numero');
+                $addLink.click(function (e) {
+                        const $this = $(this);
+                        const proto_class = $this.attr('data-protoclass');
+                        const name = $this.attr('data-protoname');
+                        const $container = $($this.attr('data-container'));
+
+
+                        addLine($container, name, proto_class);
+
+
+                        e.preventDefault();
+                        
+                        // évite qu'un # apparaisse dans l'URL
+                });
+
+                if (index > 0) {
+                        $container.children('.row-colonne_numero').each(function () {
+                            const $this = $(this);
+                            addDeleteLink($this);
+                            const $select = $this.find("select");
+
+
+                            $select.each(function () {
+                                const $this = $(this);
+                                init_select2($this, null, '#exampleModalSizeLg2');
+                                if ($this.hasClass('select-type')) {
+                                    let field_str = $this.find('option:selected').attr('data-require-fields');
+                                    const $parent = $this.closest('.row-colonne_numero');
+                                    let fields = [];
+                                    if (typeof field_str != 'undefined') {
+                                        fields = field_str.split(',');
+                                        for (let field of fields) {
+                                        $parent.find('.' + field).removeClass('d-none');
+                                        }
+                                    } else {
+                                        $parent.find('.source,.valeurs').addClass('d-none');
+                                    }
+                                }
+                            });
+
+                        });
+
+                }
+
+
+                // La fonction qui ajoute un formulaire Categorie
+                function addLine($container, name, proto_class) {
+                // Dans le contenu de l'attribut « data-prototype », on remplace :
+                // - le texte "__name__label__" qu'il contient par le label du champ
+                // - le texte "__name__" qu'il contient par le numéro du champ
+
+                var $prototype = $($(proto_class).attr('data-prototype').replace(new RegExp(name + 'label__', 'g'), 'Colonne ' + (
+                index + 1
+                )).replace(new RegExp(name, 'g'), index));
+
+
+                init_select2($prototype.find('select'), null, '#exampleModalSizeLg2');
+
+
+                // On ajoute au prototype un lien pour pouvoir supprimer la prestation
+                addDeleteLink($prototype, name);
+                // On ajoute le prototype modifié à la fin de la balise <div>
+                $container.append($prototype);
+
+                index++;
+            }
+
+
+            function addDeleteLink($prototype, name = null) { // Création du lien
+            $deleteLink = $('<a href="#" class="btn btn-danger btn-xs" style="margin-top: 0px;"><span class="fa fa-trash"></span></a>');
+            // Ajout du lien
+            $prototype.find(".del-col_numero").append($deleteLink);
+
+
+            // Ajout du listener sur le clic du lien
+            $deleteLink.click(function (e) {
+            const $this = $(this);
+            const $parent = $this.closest($this.parent('div').attr('data-parent'));
+
+            // console.log($(this).attr('data-parent'), $(this));
+            $parent.remove();
+
+            if (index > 0) {
+            index -= 1;
+            }
+
+            e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+            });
+       }
+
+
+    })
+
+
+  $(function () {
+                const $container = $('.proto-container_email');
+
+                var index = $container.find('.row-colonne_email').length;
+
+
+                $(document).on('select2:select', '.select-type', function (e) {
+                        const $this = $(this);
+                        let field_str = $this.find('option:selected').attr('data-require-fields');
+                        const $parent = $this.closest('.row-colonne_email');
+                        let fields = [];
+                        if (typeof field_str != 'undefined') {
+                            fields = field_str.split(',');
+                            for (let field of fields) {
+                                $parent.find('.' + field).removeClass('d-none');
+                            }
+                        } else {
+                                $parent.find('.source,.valeurs').addClass('d-none');
+                        }
+                });
+
+
+                const $addLink = $('.add_line_email');
+                $addLink.click(function (e) {
+                        const $this = $(this);
+                        const proto_class = $this.attr('data-protoclass');
+                        const name = $this.attr('data-protoname');
+                        const $container = $($this.attr('data-container'));
+
+
+                        addLine($container, name, proto_class);
+
+
+                        e.preventDefault();
+                        
+                         // évite qu'un # apparaisse dans l'URL
+                });
+
+                if (index > 0) {
+                        $container.children('.row-colonne_email').each(function () {
+                            const $this = $(this);
+                            addDeleteLink($this);
+                            const $select = $this.find("select");
+
+
+                            $select.each(function () {
+                                const $this = $(this);
+                                init_select2($this, null, '#exampleModalSizeLg2');
+                                if ($this.hasClass('select-type')) {
+                                    let field_str = $this.find('option:selected').attr('data-require-fields');
+                                    const $parent = $this.closest('.row-colonne_email');
+                                    let fields = [];
+                                    if (typeof field_str != 'undefined') {
+                                        fields = field_str.split(',');
+                                        for (let field of fields) {
+                                        $parent.find('.' + field).removeClass('d-none');
+                                        }
+                                    } else {
+                                        $parent.find('.source,.valeurs').addClass('d-none');
+                                    }
+                                }
+                            });
+
+                        });
+
+                }
+
+
+                // La fonction qui ajoute un formulaire Categorie
+                function addLine($container, name, proto_class) {
+                // Dans le contenu de l'attribut « data-prototype », on remplace :
+                // - le texte "__name__label__" qu'il contient par le label du champ
+                // - le texte "__name__" qu'il contient par le numéro du champ
+
+                var $prototype = $($(proto_class).attr('data-prototype').replace(new RegExp(name + 'label__', 'g'), 'Colonne ' + (
+                index + 1
+                )).replace(new RegExp(name, 'g'), index));
+
+
+                init_select2($prototype.find('select'), null, '#exampleModalSizeLg2');
+
+
+                // On ajoute au prototype un lien pour pouvoir supprimer la prestation
+                addDeleteLink($prototype, name);
+                // On ajoute le prototype modifié à la fin de la balise <div>
+                $container.append($prototype);
+
+                index++;
+            }
+
+
+            function addDeleteLink($prototype, name = null) { // Création du lien
+            $deleteLink = $('<a href="#" class="btn btn-danger btn-xs" style="margin-top: 0px;"><span class="fa fa-trash"></span></a>');
+            // Ajout du lien
+            $prototype.find(".del-col_email").append($deleteLink);
+
+
+            // Ajout du listener sur le clic du lien
+            $deleteLink.click(function (e) {
+            const $this = $(this);
+            const $parent = $this.closest($this.parent('div').attr('data-parent'));
+
+            // console.log($(this).attr('data-parent'), $(this));
+            $parent.remove();
+
+            if (index > 0) {
+            index -= 1;
+            }
+
+            e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+            });
+       }
+
+
+    })
+</script>
+{% endblock %}

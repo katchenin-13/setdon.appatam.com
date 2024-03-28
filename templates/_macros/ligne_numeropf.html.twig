@@ -1,0 +1,55 @@
+{% macro colonne(numeropfs) %}
+	<div class="row-colonne_numero  ">
+		{#{{ dump(redaction.children.path.vars.data) }}#}
+		<div class="row">
+             <div class="form-group col-md-10">{{ form_row(numeropfs.libelle) }}</div>
+			 <div class="col-1 del-col_numero" data-parent=".row-colonne_numero"></div>
+		</div>
+	</div>
+{% endmacro  %}
+
+{% macro colonne(numeropfs) %}
+
+	<div class="row-colonne_numero  ">
+		{#{{ dump(redaction.children.path.vars.data) }}#}
+		<div class="row">
+			<div class="form-group col-md-10">{{ form_row(numeropfs.libelle) }}</div>
+			<div class="col-1 del-col_numero" data-parent=".row-colonne_numero"></div>
+		</div>
+
+	</div>
+
+{% endmacro  %}
+
+
+
+
+
+{% macro prototype_ligne_colonne_numero(form) %}
+	<div class="list-colonne_numero" data-prototype="{{ _self.colonne(form.numeropfs.vars.prototype, 1)|e }}"></div>
+	<div class="row py-2 mb-4 main" style="border-bottom:3px solid white;background: #3a4049">
+		<div class="col-9">
+			<h3 class="text-white">LISTE DES NUMEROS</h3>
+		</div>
+		<div class="col-3">
+			<button type="button" data-protoname="__name__" class="btn btn-default add_line_numero btn-xs" id="add_ligne_numero" data-protoclass=".list-colonne_numero" data-container=".column-container_numero">
+				<i class="fa fa-plus"></i>
+				Ajouter
+			</button>
+		</div>
+
+	</div>
+	<div class="row mb-4">
+		<div class="col-11">Numéro</div>
+		
+		<div class="col-1 del-col_numero" data-parent=".row-colonne_numero"></div>
+	</div>
+
+
+	<div class="column-container_numero proto-container_numero" data-childclass="">
+		{% for item in form.numeropfs %}
+
+			{{ _self.colonne(item|e) }}
+		{% endfor %}
+	</div>
+{% endmacro %}

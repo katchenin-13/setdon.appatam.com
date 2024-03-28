@@ -1,0 +1,44 @@
+{% macro colonne(emailpfs) %}
+
+
+	<div class="row-colonne_email  ">
+		{#{{ dump(redaction.children.path.vars.data) }}#}
+		<div class="row">
+			<div class="form-group col-10">{{ form_row(emailpfs.libelle) }}</div>
+
+			<div class="col-1 del-col_email" data-parent=".row-colonne_email"></div>
+		</div>
+
+	</div>
+
+
+{% endmacro  %}
+
+
+{% macro prototype_ligne_colonne_email(form) %}
+	<div class="list-colonne_email" data-prototype="{{ _self.colonne(form.emailpfs.vars.prototype, 1)|e }}"></div>
+	<div class="row py-2 mb-4 main" style="border-bottom:3px solid white;background: #3a4049">
+		<div class="col-9">
+			<h3 class="text-white">AJOUTER DES EMAILLS</h3>
+		</div>
+		<div class="col-3">
+			<button type="button" data-protoname="__name__" class="btn btn-default add_line_email btn-xs" id="add_ligne_email" data-protoclass=".list-colonne_email" data-container=".column-container_email">
+				<i class="fa fa-plus"></i>
+				Ajouter
+			</button>
+		</div>
+
+	</div>
+	<div class="row mb-4">
+		<div class="col-11">Email</div>
+		<div class="col-1 del-col_email" data-parent=".row-colonne_email"></div>
+	</div>
+
+
+	<div class="column-container_email proto-container_email" data-childclass="">
+		{% for item in form.emailpfs %}
+
+			{{ _self.colonne(item|e) }}
+		{% endfor %}
+	</div>
+{% endmacro %}

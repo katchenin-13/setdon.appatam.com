@@ -1,0 +1,110 @@
+imports:
+  - "./workflows/"
+framework:
+  workflows:
+    promesse:
+      type: "state_machine"
+      audit_trail:
+        enabled: true
+      marking_store:
+        type: "method"
+        property: "etat"
+      supports:
+        - App\Entity\Promesse
+
+      initial_marking: promesse_initie
+      places:
+        - promesse_initie
+        - promesse_valider
+        - promesse_rejeter
+      transitions:
+           rejeter:
+              from: promesse_initie
+              to: promesse_rejeter
+           valider:
+              from: promesse_initie
+              to: promesse_valider
+    audience:
+          type: "state_machine"
+          audit_trail:
+            enabled: true
+          marking_store:
+            type: "method"
+            property: "etat"
+          supports:
+            - App\Entity\Audience
+
+          initial_marking: audience_initie
+          places:
+              - audience_initie
+              - audience_valider
+              - audience_rejeter
+
+          transitions:
+           
+            rejeter:
+              from: audience_initie
+              to: audience_rejeter
+            valider:
+              from: audience_initie
+              to: audience_valider
+           
+  
+    demande:
+          type: "state_machine"
+          audit_trail:
+            enabled: true
+          marking_store:
+            type: "method"
+            property: "etat"
+          supports:
+            - App\Entity\Demande
+
+          initial_marking: demande_initie
+          places:
+            - demande_initie
+            - demande_valider
+            - demande_rejeter
+          transitions:
+            rejeter:
+              from: demande_initie
+              to: demande_rejeter
+            valider:
+              from: demande_initie
+              to: demande_valider
+              
+    mission:
+          type: "state_machine"
+          audit_trail:
+            enabled: true
+          marking_store:
+            type: "method"
+            property: "etat"
+          supports:
+            - App\Entity\Mission
+
+          initial_marking: mission_initie
+          places:
+            - mission_initie
+            - entant_rapport
+            - entant_validation
+            - mission_termine
+            - rapport_rejeter
+          transitions:
+            creation:
+              from: mission_initie
+              to: entant_rapport
+            verification:
+              from: entant_rapport
+              to: entant_validation
+            valider:
+              from:  entant_validation
+              to: mission_termine
+            rejeter:
+              from: entant_validation
+              to: rapport_rejeter
+            retour:
+              from:  rapport_rejeter
+              to: entant_validation
+             
+           

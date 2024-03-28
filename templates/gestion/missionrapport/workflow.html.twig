@@ -1,0 +1,118 @@
+{% block page_content %}
+{% form_theme form 'widget/fields-block.html.twig' %}
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Modification de l' Audience</h5>
+    <div class="btn btn-icon btn-sm  ms-2" data-bs-dismiss="modal" aria-label="Close">
+        <span class="svg-icon svg-icon-2x text-white">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)"
+                    fill="currentColor"></rect>
+                <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)"
+                    fill="currentColor"></rect>
+            </svg>
+        </span>
+    </div>
+</div>
+{{ form_start(form, {'attr': {'role':'form', 'class': 'form'}}) }}
+<div class="modal-body">
+    {{ include('_includes/ajax/response.html.twig') }}
+    {# {{ form_widget(form) }} #}
+        <div class="row">
+
+            <div class="col-md-8">{{ form_row(form.titre_mission) }}</div>
+            <div class="col-md-4">{{ form_row(form.communaute) }}</div>
+            {# <div class="col-md-6">{{ form_row(form.debut) }}</div>
+            <div class="col-md-6">{{ form_row(form.datefin) }}</div>
+            <div class="col-md-8">{{ form_row(form.ordremission) }}</div> #}
+            <div class="col-md-6">{{ form_row(form.employe) }}</div>
+            <div class="col-md-6">{{ form_row(form.nombrepersonne) }}</div> 
+            <div class="col-md-12">{{ form_row(form.objectifs) }}</div>
+            <div class="col-md-12">{{ form_row(form.action)}}</div>
+            <div class="col-md-12">{{ form_row(form.opportunite)}}</div>
+            <div class="col-md-12">{{ form_row(form.difficulte) }}</div>
+        {#
+            {% if etat in ["missionrapport_rejeter"] %}
+            <div class="col-md-12 justication">{{ form_row(form.justification) }}</div>
+            <div class="notice d-flex bg-light-primary rounded border-primary border border-dashed rounded-3 p-6">
+            
+                <!--begin::Wrapper-->
+                <div class="d-flex flex-stack flex-grow-1 ">
+                    <!--begin::Content-->
+                    <div class=" fw-semibold">
+                        <h4 class="text-gray-900 fw-bold">This is a very important privacy notice!</h4>
+            
+                        <div class="fs-6 text-gray-700 ">Writing headlines for blog posts is much science and probably cool
+                            audience. <a href="#" class="fw-bold">Learn more</a>.</div>
+                    </div>
+                    <!--end::Content-->
+            
+                </div>
+                <!--end::Wrapper-->
+            </div>
+           
+            {% endif %
+
+            <p class="d-none">Workflow State: <span id="workflow-state">{{ etat|raw }}</span></p>}#}
+            <div class="col-md-12 justication">{{ form_row(form.justification,{'attr':{'class':'justication'}}) }}</div>
+            <div class="col-md-12">{{ form_row(form.prochaineetat) }}</div>
+
+            
+         
+
+ 
+        </div>
+    <div class="modal-footer">
+        {# {{ include('_includes/ajax/loader.html.twig') }} 
+        <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">Annuler</button>#}
+
+        {% if etat =="missionrapport_attend"%}
+
+       
+            {{ form_widget(form.rejeter) }}
+           
+                <a href="{{ path('app_gestion_mission_rapport_justification',{'id':id})}}" class="btn btn-default"
+                    data-bs-stacked-toggle="modal" data-bs-stacked-modal="#exampleModalSizeLg22">
+                    Rejeter
+                </a>
+           
+          
+         {{ form_widget(form.accorder) }}
+        
+
+      {% endif %}
+       
+  
+    {{ form_end(form) }}
+    {% endblock %}
+
+    {% block javascripts_inline %}
+    <script>
+        $(function () {
+                    init_select2('select');
+            var elements = Array.from(document.querySelectorAll("[data-bs-stacked-modal]"));
+
+                    if (elements && elements.length > 0) {
+                        elements.forEach((element) => {
+                            if (element.getAttribute("data-kt-initialized") === "1" ) {
+                                return;
+                            }
+
+                            const url = element.getAttribute('href');
+                            element.setAttribute("data-kt-initialized", "1");
+
+
+                            element.addEventListener("click", function(e) {
+                                e.preventDefault();
+
+                                const modalEl = document.querySelector(this.getAttribute("data-bs-stacked-modal"));
+
+                                if (modalEl) {
+                                    const modal = new bootstrap.Modal(modalEl);
+                                    modal.show(element);
+                                }
+                            });
+                        });
+                    }
+         })
+    </script>
+    {% endblock %}

@@ -1,0 +1,185 @@
+{% block body %}
+{% form_theme form 'widget/fields-block.html.twig' %}
+<div class="card card-tabs card-stretch card-custom card-sticky">
+    <div class="card-header card-header-stretch card-header-custom">
+        <h3 class="card-title"> Evolution audiences par mois</h3>
+    </div>
+    <div class="card-body">
+        {{ form_start(form)}}
+        <div class="row">
+            <div class="col-md-6">{{ form_row(form.date) }}</div>
+            <div class="col-md-6">{{ form_row(form.communaute) }}</div>
+        </div>
+        {{ form_end(form, {render_rest: false}) }}
+        <div class="row">
+            <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
+                <!--begin::Wrapper-->
+                <div class="flex-grow-1">
+                    <br>
+                    <!--begin::Info-->
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <!--begin::Stats-->
+                        <div class="d-flex flex-wrap">
+                            <!--begin::Stat-->
+                            <div class="border border-gray-300  rounded min-w-175px py-3 px-4 me-6 mb-3">
+                                <!--begin::Number-->
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-4 fw-bold counted totalinitial">0</div>
+                                </div>
+                                <!--begin::Label-->
+                                <div class="fw-semibold fs-6 text-gray-400">En attends</div>
+                                <!--end::Label-->
+                            </div>
+                            <!--end::Stat-->
+                            <!--begin::Stat-->
+                            <div class="border border-gray-300  rounded min-w-175px py-3 px-4 me-6 mb-3">
+                                <!--begin::Number-->
+                                <div class="d-flex align-items-center">
+                                    <i class="ki-outline ki-arrow-down fs-3 text-danger me-2"></i>
+                                    <div class="fs-4 fw-bold counted totalvalider" data-kt-countup="true" data-kt-countup-value="75"
+                                        data-kt-initialized="1"> 0 </div>
+                                </div>
+                                <!--end::Number-->
+            
+                                <!--begin::Label-->
+                                <div class="fw-semibold fs-6 text-gray-400">Valider</div>
+                                <!--end::Label-->
+                            </div>
+                            <!--end::Stat-->
+            
+                            <!--begin::Stat-->
+                            <div class="border border-gray-300  rounded min-w-175px py-3 px-4 me-6 mb-3">
+                                <!--begin::Number-->
+                                <div class="d-flex align-items-center">
+                                    <i class="ki-outline ki-arrow-up fs-3 text-success me-2"></i>
+                                    <div class="fs-4 fw-bold counted totalrejeter" data-kt-countup="true" data-kt-countup-value="15000"
+                                        data-kt-countup-prefix="" data-kt-initialized="1">0</div>
+                                </div>
+                                <!--end::Number-->
+            
+                                <!--begin::Label-->
+                                <div class="fw-semibold fs-6 text-gray-400">Rejeter</div>
+                                <!--end::Label-->
+                            </div>
+                            <!--end::Stat-->
+                        </div>
+                        <!--end::Stats-->
+            
+                        <!--begin::Users-->
+            
+                        <!--end::Users-->
+                    </div>
+                    <!--end::Info-->
+                </div>
+                <!--end::Wrapper-->
+            </div>
+            <div class="col-md-12">
+                <div class="filter-block d-flex justify-content-center">
+
+
+                </div>
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert-error"></div>
+                <div id="container"></div>
+            </div>
+            {# <div class="col-md-4">
+
+            </div> #}
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block java %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script>
+    $(function () {
+        init_select2();
+        // load_data();
+        const $dateDebut = $('#{{ form.date.vars.id }}');
+        const $communaute = $('#{{ form.communaute.vars.id }}');
+        const $error = $('.alert-error');
+        $communaute.on('change', function () {
+            const $this = $(this);
+            const current_value = $this.find('option:selected').attr('data-value');
+            var date = $('.date').find('option:selected').attr('value')
+            $error.html('');
+            if ($this.val()) {
+                load_data(current_value, { date: date, communaute: $this.val() });
+            } else {
+                $error.html('Veuillez sélectionner l\'année');
+            }
+
+        });
+
+        $dateDebut.on('change', function () {
+            const $this = $(this);
+            const current_value = $this.find('option:selected').attr('value');
+            var communaute = $('.communaute').find('option:selected').attr('value')
+            // alert(current_value)
+            $error.html('');
+            if ($this.val()) {
+                load_data(current_value, { date: $this.val(), communaute: communaute });
+            } else {
+                $error.html('Veuillez sélectionner la communaute');
+            }
+
+        });
+        function load_data(contrat, filters = []) {
+            $.getJSON("{{ path('app_gestion_statistique_audience_tableau_data') }}", { filters: filters }, function (data) {
+                console.log(data.series);
+                $('.totalinitial').html(data.compteAudience.audienceInitie);
+                $('.totalvalider').html(data.compteAudience.audienceValider);
+                $('.totalrejeter').html(data.compteAudience.audienceRejeter);
+
+                // Data retrieved from https://www.ssb.no/statbank/table/10467/
+                 // Data retrieved from https://worldpopulationreview.com/country-rankings/countries-by-density
+                
+
+                // Data retrieved from https://netmarketshare.com
+                Highcharts.chart('container', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Evolution audiences par année et par communauté',
+                        align: 'center'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    accessibility: {
+                        point: {
+                            valueSuffix: '%'
+                        }
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                            }
+                        }
+                    },
+                    series:[data.data]
+                });
+
+
+
+
+            });
+        }
+
+
+    });
+</script>
+{% endblock %}
