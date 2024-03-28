@@ -6,7 +6,7 @@
 {% block body %}
 <div class="card shadow-sm">
     <div class="card-header card-header-sm">
-        <h3 class="card-title"> Liste des rapports de missions</h3>
+        <h3 class="card-title"> Liste des audiences(groupes de personnes)</h3>
         <div class="card-toolbar">
             {% if permition in ["CR","CRU","CRUD"] %}
             <a href="{{ path('app_config_audience_index') }}" class="btn btn-main btn-sm">
@@ -38,7 +38,7 @@
         <div class="row">
             <div class="col-sm-12">
                 {% if permition != null %}
-                <div id="grid_app_gestion_statis_attente_rapport" class="grid-dt-wrapper">Chargement....</div>
+                <div id="grid_app_gestion_statis_attente_demande" class="grid-dt-wrapper">Chargement....</div>
                 {% else %}
                 <div class="d-flex flex-column flex-center flex-column-fluid">
                     <!--begin::Content-->
@@ -72,7 +72,7 @@
     {# <div class="card-body">
         <div class="row">
             <div class="col-sm-12">
-                <div id="grid_app_gestion_rapport" class="grid-dt-wrapper">Chargement....</div>
+                <div id="grid_app_gestion_demande" class="grid-dt-wrapper">Chargement....</div>
             </div>
         </div>
     </div> #}
@@ -83,14 +83,14 @@
 {% block java %}
 <script src="{{ asset('assets/js/datatables.js') }}"></script>
 <script src="{{ asset('assets/js/active.js') }}"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
+
 
 <script>
     $(function () {
 
-        $('#grid_app_gestion_statis_attente_rapport').initDataTables({{ datatable_settings(datatable) }}, {
+        $('#grid_app_gestion_statis_attente_demande').initDataTables({{ datatable_settings(datatable) }}, {
         searching: true,
-        ajaxUrl: "{{ path('app_gestion_statistique_attante_rapport') }}",
+        ajaxUrl: "{{ path('app_gestion_statistique_attante_demande') }}",
         language: {
             url: asset_base_path + "/js/i18n/French.json"
         }

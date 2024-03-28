@@ -92,7 +92,6 @@
             <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
         {% endblock %}
         {% block inline_stylesheets %}{% endblock %}
-        <script src="https://code.highcharts.com/highcharts.js"></script>
         <script>
             var asset_base_path = "{{ asset('assets') }}";
             var current_user_id = "{{ app.user.id|default(0) }}";
