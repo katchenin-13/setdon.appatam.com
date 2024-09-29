@@ -40,13 +40,16 @@ class AuthenticationSuccessListener extends ApiInterface
             //dd($user);
 
             $data['data'] =   [
+               'data' => [
                 'reference' => $user->getId(),
-                'username' => $userData->getUsername(),
+                'username' => $userData->getUsername()
+            ]
                 //"type" => "user",
 
             ];
             // dd($data)
             $event->setData($data);
+            
         }
 
         // if ($user instanceof UtilisateurSimple) {

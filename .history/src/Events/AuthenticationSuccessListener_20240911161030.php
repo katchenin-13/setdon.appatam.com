@@ -32,21 +32,29 @@ class AuthenticationSuccessListener extends ApiInterface
     {
         $data = $event->getData();
         $user = $event->getUser();
-
+        // Génération d'un accessToken (exemple simple)
+        $accessToken = $this->generateAccessToken($user);
         //dd($user);
       
          if ($user instanceof Utilisateur) {
             $userData = $this->utilisateurRepository->find($user->getId());
             //dd($user);
 
-            $data['data'] =   [
-                'reference' => $user->getId(),
-                'username' => $userData->getUsername(),
-                //"type" => "user",
-
+            $responseData = [
+                'status' => 0,
+                'message' => 'Succès',
+                'data' => [
+                    'reference' => $user->getId(),
+                    'username' => $userData->getUsername(),
+                    'avatar' => "https://fr.web.img6.acsta.net/newsv7/21/02/26/16/13/3979241.jpg",
+                    'id' => $user->getId(),
+                    'accessToken' => $accessToken,
+                    'expiredAt' => (new \DateTime())->format('Y-m-d H:i:s'),
+                    'url' => "hhhh"
+                ]
             ];
-            // dd($data)
-            $event->setData($data);
+
+            $event->setData($responseData);
         }
 
         // if ($user instanceof UtilisateurSimple) {
@@ -82,4 +90,13 @@ class AuthenticationSuccessListener extends ApiInterface
 
         }*/
     }
+
+    private function generateAccessToken($user)
+    {
+        // Exemple de génération d'un token, remplacez par votre logique
+        return bin2hex(random_bytes(16)); // génère un token aléatoire pour cet exemple
+    }
 }
+
+
+// Fonction pour générer un accessToken

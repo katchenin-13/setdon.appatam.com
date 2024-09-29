@@ -39,14 +39,21 @@ class AuthenticationSuccessListener extends ApiInterface
             $userData = $this->utilisateurRepository->find($user->getId());
             //dd($user);
 
-            $data['data'] =   [
-                'reference' => $user->getId(),
-                'username' => $userData->getUsername(),
-                //"type" => "user",
-
+            $responseData = [
+                'status' => 0,
+                'message' => 'Succès',
+                'data' => [
+                    'reference' => $user->getId(),
+                    'username' => $userData->getUsername(),
+                    'avatar' => "https://fr.web.img6.acsta.net/newsv7/21/02/26/16/13/3979241.jpg",
+                    'id' => $user->getId(),
+                    'accessToken' => $accessToken,
+                    'expiredAt' => (new \DateTime())->format('Y-m-d H:i:s'),
+                    'url' => "hhhh"
+                ]
             ];
-            // dd($data)
-            $event->setData($data);
+
+            $event->setData($responseData);
         }
 
         // if ($user instanceof UtilisateurSimple) {
@@ -83,3 +90,6 @@ class AuthenticationSuccessListener extends ApiInterface
         }*/
     }
 }
+
+
+// Fonction pour générer un accessToken

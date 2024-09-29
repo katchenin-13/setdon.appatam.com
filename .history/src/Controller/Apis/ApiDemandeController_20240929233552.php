@@ -4,7 +4,7 @@ namespace App\Controller\Apis;
 
 use App\Controller\ApiInterface;
 use App\Entity\Demande;
-use OpenApi\Attributes as OA;
+
 use App\Repository\DemandeRepository;
 use App\Repository\ModuleGroupePermitionRepository;
 use App\Repository\PromesseRepository;
@@ -17,26 +17,32 @@ use Symfony\Component\Serializer\Serializer;
 use function Symfony\Component\String\toString;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
-
+use OpenApi\Annotations as OA;
 
 #[Route('/api/demande')]
 class ApiDemandeController extends ApiInterface
 {
     #[Route('/', name: 'api_demande', methods: ['GET'])]
-    #[OA\Response(
-        response: 200,
-        description: "Returns the rewards of an user",
-        content: new OA\JsonContent(
-            type: 'array',
-            items: new OA\Items(ref: new Model(type: Demande::class, groups: ['full']))
-        )
-    )]
-    #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
+    /**
+     * Affiche toutes les civiltes.
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns the rewards of an user",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Demande::class, groups={"full"}))
+     *     )
+     * )
+     * @OA\Tag(name="Demande")
+     * @Security(name="Bearer")
+     */
     public function getAll(DemandeRepository $demandeRepository, PromesseRepository $promesseRepository, Request $request): Response
     {
+        //dd($this->response($promesseRepository->findAll()));
         try {
+            //dd($groupePermitionRepository->getNombreDemandeParMois());
             $demandes = $demandeRepository->findAll();
+             $item = [];
             $tabaDemande = [];
             $i = 0;
             foreach ($demandes as $key => $value) {
@@ -69,8 +75,13 @@ class ApiDemandeController extends ApiInterface
 
 
     #[Route('/validation/{id}', name: 'api_audience_validation', methods: ['POST'])]
-    #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
+
+    /**
+     * Permet de mettre à jour une demande.
+     *
+     * @OA\Tag(name="Demande")
+     * @Security(name="Bearer")
+     */
     public function validation(Request $request, Demande $demande, DemandeRepository $audienceRepository): Response
     {
         try {
@@ -170,10 +181,14 @@ class ApiDemandeController extends ApiInterface
         return $response;
     }
 
+
     #[Route('/update/{id}', name: 'api_demande_update', methods: ['POST'])]
-    #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
-    
+    /**
+     * Permet de mettre à jour une demande.
+     *
+     * @OA\Tag(name="Demande")
+     * @Security(name="Bearer")
+     */
     public function update(Request $request, DemandeRepository $demandeRepository, $id)
     {
         try {
@@ -203,8 +218,12 @@ class ApiDemandeController extends ApiInterface
 
 
     #[Route('/delete/{id}', name: 'api_demande_delete', methods: ['POST'])]
-    #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
+    /**
+     * permet de supprimer une demande en offrant un identifiant.
+     *
+     * @OA\Tag(name="Demande")
+     * @Security(name="Bearer")
+     */
     public function delete(Request $request, DemandeRepository $demandeRepository, $id)
     {
         try {
@@ -229,9 +248,13 @@ class ApiDemandeController extends ApiInterface
         return $response;
     }
 
+
     #[Route('/active/{id}', name: 'api_demande_active', methods: ['GET'])]
-    #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
+    /**
+     * Permet d'activer une demande en offrant un identifiant.
+     * @OA\Tag(name="Demande")
+     * @Security(name="Bearer")
+     */
     public function active(?Demande $demande, DemandeRepository $demandeRepository)
     {
         /*  $demande = $demandeRepository->find($id);*/
@@ -256,9 +279,13 @@ class ApiDemandeController extends ApiInterface
     }
 
 
-    #[Route('/active/multiple', name: 'api_audience_active_multiple', methods: ['POST'])]
-    #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
+    #[Route('/active/multiple', name: 'api_audeince_active_multiple', methods: ['POST'])]
+    /**
+     * Permet de faire une desactivation multiple.
+     *
+     * @OA\Tag(name="Demande")
+     * @Security(name="Bearer")
+     */
     public function multipleActive(Request $request, DemandeRepository $demandeRepository)
     {
         try {

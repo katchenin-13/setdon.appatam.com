@@ -69,8 +69,13 @@ class ApiDemandeController extends ApiInterface
 
 
     #[Route('/validation/{id}', name: 'api_audience_validation', methods: ['POST'])]
-    #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
+
+    /**
+     * Permet de mettre à jour une demande.
+     *
+     * @OA\Tag(name="Demande")
+     * @Security(name="Bearer")
+     */
     public function validation(Request $request, Demande $demande, DemandeRepository $audienceRepository): Response
     {
         try {
@@ -170,10 +175,14 @@ class ApiDemandeController extends ApiInterface
         return $response;
     }
 
+
     #[Route('/update/{id}', name: 'api_demande_update', methods: ['POST'])]
-    #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
-    
+    /**
+     * Permet de mettre à jour une demande.
+     *
+     * @OA\Tag(name="Demande")
+     * @Security(name="Bearer")
+     */
     public function update(Request $request, DemandeRepository $demandeRepository, $id)
     {
         try {
@@ -203,8 +212,12 @@ class ApiDemandeController extends ApiInterface
 
 
     #[Route('/delete/{id}', name: 'api_demande_delete', methods: ['POST'])]
-    #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
+    /**
+     * permet de supprimer une demande en offrant un identifiant.
+     *
+     * @OA\Tag(name="Demande")
+     * @Security(name="Bearer")
+     */
     public function delete(Request $request, DemandeRepository $demandeRepository, $id)
     {
         try {
@@ -229,9 +242,13 @@ class ApiDemandeController extends ApiInterface
         return $response;
     }
 
+
     #[Route('/active/{id}', name: 'api_demande_active', methods: ['GET'])]
-    #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
+    /**
+     * Permet d'activer une demande en offrant un identifiant.
+     * @OA\Tag(name="Demande")
+     * @Security(name="Bearer")
+     */
     public function active(?Demande $demande, DemandeRepository $demandeRepository)
     {
         /*  $demande = $demandeRepository->find($id);*/
@@ -256,9 +273,13 @@ class ApiDemandeController extends ApiInterface
     }
 
 
-    #[Route('/active/multiple', name: 'api_audience_active_multiple', methods: ['POST'])]
-    #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
+    #[Route('/active/multiple', name: 'api_audeince_active_multiple', methods: ['POST'])]
+    /**
+     * Permet de faire une desactivation multiple.
+     *
+     * @OA\Tag(name="Demande")
+     * @Security(name="Bearer")
+     */
     public function multipleActive(Request $request, DemandeRepository $demandeRepository)
     {
         try {

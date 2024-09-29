@@ -22,8 +22,7 @@ class JWTAuthenticationFailureResponseSubscriber implements EventSubscriberInter
     {
         /** @var JWTAuthenticationFailureResponse $response */
         $response = $event->getResponse();
-        // My own processing where I used to have 
-        $event->getException()->getToken();
+        // My own processing where I used to have $event->getException()->getToken()
         $response->setMessage("ERROR MESSAGE");
     }
 

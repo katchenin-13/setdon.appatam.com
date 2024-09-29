@@ -47,7 +47,10 @@ class AuthenticationSuccessListener extends ApiInterface
             ];
             // dd($data)
             $event->setData($data);
+
         }
+
+        
 
         // if ($user instanceof UtilisateurSimple) {
         //     $userData = $this->userFrontRepository->findOneBy(array('reference' => $user->getReference()));

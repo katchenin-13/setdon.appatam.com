@@ -170,10 +170,14 @@ class ApiDemandeController extends ApiInterface
         return $response;
     }
 
+
     #[Route('/update/{id}', name: 'api_demande_update', methods: ['POST'])]
-    #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
-    
+    /**
+     * Permet de mettre à jour une demande.
+     *
+     * @OA\Tag(name="Demande")
+     * @Security(name="Bearer")
+     */
     public function update(Request $request, DemandeRepository $demandeRepository, $id)
     {
         try {

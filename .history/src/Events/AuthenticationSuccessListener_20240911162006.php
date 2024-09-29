@@ -40,13 +40,18 @@ class AuthenticationSuccessListener extends ApiInterface
             //dd($user);
 
             $data['data'] =   [
-                'reference' => $user->getId(),
+                'reference' => $userData->getId(),
                 'username' => $userData->getUsername(),
+                'avatar' => "https://fr.web.img6.acsta.net/newsv7/21/02/26/16/13/3979241.jpg",
+                'accessToken' => "ffff",
+                'expiredAt' => (new \DateTime())->format('Y-m-d H:i:s'),
+                'url' => "hhhh",
                 //"type" => "user",
 
             ];
             // dd($data)
             $event->setData($data);
+            
         }
 
         // if ($user instanceof UtilisateurSimple) {

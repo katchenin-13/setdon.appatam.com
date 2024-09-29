@@ -47,7 +47,16 @@ class AuthenticationSuccessListener extends ApiInterface
             ];
             // dd($data)
             $event->setData($data);
+
         }
+
+        {
+	"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MjYwNTEyNzMsImV4cCI6MTcyNjA1NDg3Mywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiYWRtaW4ifQ.qnZHPOYjCWHanB6abYTrgKTN-0coL0SvA1vCSmcuZn9iQ7bKTUfEqnNyFe6oxK6cu3rWfdR3rEmsE0FuzIo7pYJjAPd2MJf0ck2EiEg8utt7qvCU4gPeKbw3bGgm-HqMTDEjd5yWwfa7vzO-1_RXCkXSm6zf7372E5_VeUF4trthpVXRDGLb0-o35bxAZuf2NmIVmPAXnGii5JQ9o-1GMhgfqhx5pfs2vUez-1XIm7p8xsZFiFMPLIF7Xar3m3hVvsIY82SZjgkk4vuj5HdimYhsRnEB1T58JANAlcL6TWja-vVENFJZgQAxh_3IzcNWPBQl2XHQqYR7BjXT8219mA",
+	"data": {
+		"reference": 1,
+		"username": "admin"
+	}
+}
 
         // if ($user instanceof UtilisateurSimple) {
         //     $userData = $this->userFrontRepository->findOneBy(array('reference' => $user->getReference()));
