@@ -34,45 +34,34 @@ class ApiDemandeController extends ApiInterface
     #[OA\Tag(name: 'Demande')]
     #[Security(name: 'Bearer')]
     public function getAll(DemandeRepository $demandeRepository, PromesseRepository $promesseRepository, Request $request): Response
-    {
-        try {
-            $demandes = $demandeRepository->findAll();
-            $tabaDemande = [];
-            $i = 0;
-            foreach ($demandes as $key => $value) {
-                $tabaDemande[$i]['id'] = $value->getId();
-                $tabaDemande[$i]['motif'] = $value->getMotif();
-                $tabaDemande[$i]['communaute'] = $value->getCommunaute()->getLibelle();
-                $tabaDemande[$i]['nom'] = $value->getNom();
-                $tabaDemande[$i]['lieu_habitation'] =   $value->getLieuHabitation();
-                $tabaDemande[$i]['daterencontre'] = $value->getDate();
-                $tabaDemande[$i]['numero'] = $value->getNumero();
-                $tabaDemande[$i]['etat'] = $value->getEtat();
-                $i++;
-            }
+{
+    try {
+        // Récupération des demandes
+        $demandes = $demandeRepository->findAll();
 
-            //dd($tabaAudience);
+        // Utilisation de array_map pour créer une réponse formatée
+        $tabaDemande = array_map(function ($demande) {
+            return [
+                'id' => $demande->getId(),
+                'motif' => $demande->getMotif(),
+                'communaute' => $demande->getCommunaute()->getLibelle(),
+                'nom' => $demande->getNom(),
+                'lieu_habitation' => $demande->getLieuHabitation(),
+                'daterencontre' => $demande->getDate(),
+                'numero' => $demande->getNumero(),
+                'etat' => $demande->getEtat()
+            ];
+        }, $demandes);
 
+        // Réponse formatée
+        return $this->response($tabaDemande);
 
-            $response = $this->response($tabaDemande);
-            //dd($demandes);
-        } catch (\Exception $exception) {
-            $this->setMessage($exception->getMessage());
-            $response = $this->response(null);
-        }
-
-        // try {
-        //     $audiences = $demandeRepository->findAll();
-        //     $response = $this->responseNew($audiences, "group1");
-        // } catch (\Exception $exception) {
-        //     $this->setMessage($exception->getMessage());
-        //     $response = $this->response(null);
-        // }
-
-        // On envoie la réponse
-
-        return $response;
+    } catch (\Exception $exception) {
+        // En cas d'exception, retour de l'erreur avec un code HTTP approprié
+        return $this->response(null, Response::HTTP_INTERNAL_SERVER_ERROR, $exception->getMessage());
     }
+}
+
 
 
     #[Route('/validation/{id}', name: 'api_audience_validation', methods: ['POST'])]

@@ -35,39 +35,39 @@ class ApiDemandeController extends ApiInterface
     #[Security(name: 'Bearer')]
     public function getAll(DemandeRepository $demandeRepository, PromesseRepository $promesseRepository, Request $request): Response
     {
-        try {
-            $demandes = $demandeRepository->findAll();
-            $tabaDemande = [];
-            $i = 0;
-            foreach ($demandes as $key => $value) {
-                $tabaDemande[$i]['id'] = $value->getId();
-                $tabaDemande[$i]['motif'] = $value->getMotif();
-                $tabaDemande[$i]['communaute'] = $value->getCommunaute()->getLibelle();
-                $tabaDemande[$i]['nom'] = $value->getNom();
-                $tabaDemande[$i]['lieu_habitation'] =   $value->getLieuHabitation();
-                $tabaDemande[$i]['daterencontre'] = $value->getDate();
-                $tabaDemande[$i]['numero'] = $value->getNumero();
-                $tabaDemande[$i]['etat'] = $value->getEtat();
-                $i++;
-            }
-
-            //dd($tabaAudience);
-
-
-            $response = $this->response($tabaDemande);
-            //dd($demandes);
-        } catch (\Exception $exception) {
-            $this->setMessage($exception->getMessage());
-            $response = $this->response(null);
-        }
-
         // try {
-        //     $audiences = $demandeRepository->findAll();
-        //     $response = $this->responseNew($audiences, "group1");
+        //     $demandes = $demandeRepository->findAll();
+        //     $tabaDemande = [];
+        //     $i = 0;
+        //     foreach ($demandes as $key => $value) {
+        //         $tabaDemande[$i]['id'] = $value->getId();
+        //         $tabaDemande[$i]['motif'] = $value->getMotif();
+        //         $tabaDemande[$i]['communaute'] = $value->getCommunaute()->getLibelle();
+        //         $tabaDemande[$i]['nom'] = $value->getNom();
+        //         $tabaDemande[$i]['lieu_habitation'] =   $value->getLieuHabitation();
+        //         $tabaDemande[$i]['daterencontre'] = $value->getDate();
+        //         $tabaDemande[$i]['numero'] = $value->getNumero();
+        //         $tabaDemande[$i]['etat'] = $value->getEtat();
+        //         $i++;
+        //     }
+
+        //     //dd($tabaAudience);
+
+
+        //     $response = $this->response($tabaDemande);
+        //     //dd($demandes);
         // } catch (\Exception $exception) {
         //     $this->setMessage($exception->getMessage());
         //     $response = $this->response(null);
         // }
+
+        try {
+            $audiences = $demandeRepository->findAll();
+            $response = $this->responseNew($audiences, "group1");
+        } catch (\Exception $exception) {
+            $this->setMessage($exception->getMessage());
+            $response = $this->response(null);
+        }
 
         // On envoie la réponse
 

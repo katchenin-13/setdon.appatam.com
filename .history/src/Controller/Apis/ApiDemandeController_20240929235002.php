@@ -48,26 +48,19 @@ class ApiDemandeController extends ApiInterface
                 $tabaDemande[$i]['daterencontre'] = $value->getDate();
                 $tabaDemande[$i]['numero'] = $value->getNumero();
                 $tabaDemande[$i]['etat'] = $value->getEtat();
+
                 $i++;
             }
 
             //dd($tabaAudience);
 
-
+          
             $response = $this->response($tabaDemande);
             //dd($demandes);
         } catch (\Exception $exception) {
             $this->setMessage($exception->getMessage());
             $response = $this->response(null);
         }
-
-        // try {
-        //     $audiences = $demandeRepository->findAll();
-        //     $response = $this->responseNew($audiences, "group1");
-        // } catch (\Exception $exception) {
-        //     $this->setMessage($exception->getMessage());
-        //     $response = $this->response(null);
-        // }
 
         // On envoie la réponse
 
@@ -114,6 +107,7 @@ class ApiDemandeController extends ApiInterface
 
 
 
+   ]
 
     #[Route('/create', name: 'api_demande_create', methods: ['POST'])]
     #[OA\Tag(name: 'Demande')]

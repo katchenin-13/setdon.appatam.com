@@ -61,13 +61,13 @@ class ApiDemandeController extends ApiInterface
             $response = $this->response(null);
         }
 
-        // try {
-        //     $audiences = $demandeRepository->findAll();
-        //     $response = $this->responseNew($audiences, "group1");
-        // } catch (\Exception $exception) {
-        //     $this->setMessage($exception->getMessage());
-        //     $response = $this->response(null);
-        // }
+        try {
+            $audiences = $demandeRepository->findAll();
+            $response = $this->responseNew($audiences, "group1");
+        } catch (\Exception $exception) {
+            $this->setMessage($exception->getMessage());
+            $response = $this->response(null);
+        }
 
         // On envoie la réponse
 

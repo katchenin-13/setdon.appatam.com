@@ -35,12 +35,11 @@ class Demande
     private ?string $nom = null;
 
     #[ORM\Column(length: 100)]
-    #[Group(["group1"])]
+    
     #[Assert\NotBlank(message: "Veuillez renseigner le lieu d'habitation")]
     private ?string $lieu_habitation = null;
 
     #[ORM\Column(length: 16)]
-    #[Group(["group1"])]
     #[Assert\NotBlank(message: 'Veuillez renseigner le numéro')]
     #[Assert\Length(
         min: 10,
@@ -51,17 +50,14 @@ class Demande
     private ?string $numero = null;
 
     #[ORM\ManyToOne(inversedBy: 'demandes')]
-    #[Group(["group1"])]
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\NotBlank(message: 'Veuillez selectionner des la communaute')]
     private ?Communaute $communaute = null;
 
     #[ORM\Column(nullable: true, type: Types::TEXT)]
-    #[Group(["group1"])]
     private ?string $justification = null;
     
     #[ORM\Column(length: 255)]
-    #[Group(["group1"])]
     private ?string $etat = 'demande_initie' ;
 
     #[ORM\ManyToOne(inversedBy: 'demandes')]

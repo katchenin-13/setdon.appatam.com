@@ -48,26 +48,19 @@ class ApiDemandeController extends ApiInterface
                 $tabaDemande[$i]['daterencontre'] = $value->getDate();
                 $tabaDemande[$i]['numero'] = $value->getNumero();
                 $tabaDemande[$i]['etat'] = $value->getEtat();
+
                 $i++;
             }
 
             //dd($tabaAudience);
 
-
+          
             $response = $this->response($tabaDemande);
             //dd($demandes);
         } catch (\Exception $exception) {
             $this->setMessage($exception->getMessage());
             $response = $this->response(null);
         }
-
-        // try {
-        //     $audiences = $demandeRepository->findAll();
-        //     $response = $this->responseNew($audiences, "group1");
-        // } catch (\Exception $exception) {
-        //     $this->setMessage($exception->getMessage());
-        //     $response = $this->response(null);
-        // }
 
         // On envoie la réponse
 
@@ -113,11 +106,40 @@ class ApiDemandeController extends ApiInterface
 
 
 
+    // #[Route('/getOne/{id}', name: 'api_demande_get_one', methods: ['GET'])]
+    // /**
+    //  * Affiche une civilte en offrant un identifiant.
+    //  * @OA\Tag(name="Demande")
+    //  * @Security(name="Bearer")
+    //  */
+    // public function getOne(?Demande $demande)
+    // {
+    //     /*  $demande = $demandeRepository->find($id);*/
+    //     try {
+    //         if ($demande) {
+    //             $response = $this->response($demande);
+    //         } else {
+    //             $this->setMessage('Cette ressource est inexistante');
+    //             $this->setStatusCode(300);
+    //             $response = $this->response($demande);
+    //         }
+    //     } catch (\Exception $exception) {
+    //         $this->setMessage($exception->getMessage());
+    //         $response = $this->response(null);
+    //     }
+
+
+    //     return $response;
+    // }                        
 
 
     #[Route('/create', name: 'api_demande_create', methods: ['POST'])]
-    #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
+    /**
+     * Permet de créer une demande.
+     *
+     * @OA\Tag(name="Demande")
+     * @Security(name="Bearer")
+     */
     public function create(Request $request, DemandeRepository $demandeRepository)
     {
         try {
