@@ -21,11 +21,12 @@ class Audience
         return 'test';
     }
     #[ORM\Id]
-    
+    #[Group(["group1"])]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Group(["group1"])]
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message: 'Veuillez renseigner le motif ')]
     #[Assert\Length(
@@ -37,6 +38,7 @@ class Audience
     private ?string $motif = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Group(["group1"])]
     #[Assert\NotBlank(message: 'Veuillez renseigner la date de la rencontre')]
     //#[Assert\Expression("this.getDaterencontre() > this.getUpdatedAt()", message: "la date de la rencontre doit être superirieure ou égale à  la date de création")]
 
@@ -63,7 +65,7 @@ class Audience
     // )]
 
     #[Assert\Length(
-        min: 14,
+        min: 13,
         max: 16,
         minMessage: 'Le numéro de téléphone doit faire au moins {{ limit }} caractères',
         maxMessage: 'Le numéro de téléphone ne doit pas faire plus de {{ limit }} caractères'
@@ -95,6 +97,7 @@ class Audience
     private ?string $observation = null;
 
     #[ORM\ManyToOne(inversedBy: 'audiences')]
+    #[Group(["group1"])]
     #[Assert\NotBlank(message: 'Veuillez veullez selectionner la communauté')]
     private ?Communaute $communaute = null;
 

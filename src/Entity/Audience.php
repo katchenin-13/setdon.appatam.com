@@ -65,7 +65,7 @@ class Audience
     // )]
 
     #[Assert\Length(
-        min: 14,
+        min: 13,
         max: 16,
         minMessage: 'Le numéro de téléphone doit faire au moins {{ limit }} caractères',
         maxMessage: 'Le numéro de téléphone ne doit pas faire plus de {{ limit }} caractères'

@@ -48,7 +48,7 @@
     <script>
         
         $(function () {
-           // 
+           // init_select2('select');
             var etat = JSON.parse(document.getElementById('workflow-state').textContent);
             if (etat == 'demande_rejeter') {
                 $('.rejeter').hide();
@@ -59,7 +59,7 @@
                 $('.justication').hide();
             }
           
-           init_select2('select');
+           
 
             var elements = Array.from(document.querySelectorAll("[data-bs-stacked-modal]"));
 

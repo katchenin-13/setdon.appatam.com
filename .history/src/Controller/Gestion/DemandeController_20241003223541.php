@@ -395,7 +395,7 @@ class DemandeController extends BaseController
 
         if ($form->isSubmitted()) {
             $response = [];
-            $redirect = $this->generateUrl('app_config_demande_index');
+            $redirect = $this->generateUrl('app_config_audience_index');
 
 
             if ($form->isValid()) {
@@ -495,7 +495,7 @@ class DemandeController extends BaseController
 
         if ($form->isSubmitted()) {
             $response = [];
-            $redirect = $this->generateUrl('app_config_audience_index');
+            $redirect = $this->generateUrl('app_gestion_audience_workflow');
             $workflow = $this->workflow->get($demande, 'demande');
 
             if ($form->isValid()) {
@@ -554,10 +554,8 @@ class DemandeController extends BaseController
 
         return $this->renderForm('gestion/demande/workflow.html.twig', [
             'demande' => $demande,
-            'form' => $form,
             'id' => $demande->getId(),
-            'etat' => json_encode($etat)
-
+            'form' => $form,
         ]);
     }
 }

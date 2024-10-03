@@ -48,48 +48,48 @@
     <script>
         
         $(function () {
-           // 
-            var etat = JSON.parse(document.getElementById('workflow-state').textContent);
-            if (etat == 'demande_rejeter') {
-                $('.rejeter').hide();
-                $('.justication').attr('disabled', 'disabled');
-            }
-            if (etat == 'demande_valider') {
-                $('.rejeter').hide()
-                $('.justication').hide();
-            }
-          
-           init_select2('select');
+                /* $('#exampleModalSizeLg2').on('shown.bs.modal', function () {
+                              $('.valider').hide();
+                               // Code à exécuter lorsque la modal est affichée
+                               $('#monBouton').text('Le bouton a été modifié après l\'affichage de la modal');
+                           });*/
 
-            var elements = Array.from(document.querySelectorAll("[data-bs-stacked-modal]"));
+                var etat = JSON.parse(document.getElementById('workflow-state').textContent);
+                if (etat == 'demande_rejeter') {
+                    $('.rejeter').hide();
+                    $('.justication').attr('disabled', 'disabled');
+                }
+                if (etat == 'demande_valider') {
+                    $('.rejeter').hide()
+                    $('.justication').hide();
+                }
 
-            if (elements && elements.length > 0) {
-                elements.forEach((element) => {
-                    if (element.getAttribute("data-kt-initialized") === "1") {
-                        return;
-                    }
+                init_select2('select');
+                var elements = Array.from(document.querySelectorAll("[data-bs-stacked-modal]"));
 
-                    const url = element.getAttribute('href');
-                    element.setAttribute("data-kt-initialized", "1");
-
-
-                    element.addEventListener("click", function (e) {
-                        e.preventDefault();
-
-                        const modalEl = document.querySelector(this.getAttribute("data-bs-stacked-modal"));
-
-                        if (modalEl) {
-                            const modal = new bootstrap.Modal(modalEl);
-                            modal.show(element);
+                if (elements && elements.length > 0) {
+                    elements.forEach((element) => {
+                        if (element.getAttribute("data-kt-initialized") === "1") {
+                            return;
                         }
+
+                        const url = element.getAttribute('href');
+                        element.setAttribute("data-kt-initialized", "1");
+
+
+                        element.addEventListener("click", function (e) {
+                            e.preventDefault();
+
+                            const modalEl = document.querySelector(this.getAttribute("data-bs-stacked-modal"));
+
+                            if (modalEl) {
+                                const modal = new bootstrap.Modal(modalEl);
+                                modal.show(element);
+                            }
+                        });
                     });
-                });
-            }
-
-          
-
-              
-        });
+                }
+            })
 
           
 

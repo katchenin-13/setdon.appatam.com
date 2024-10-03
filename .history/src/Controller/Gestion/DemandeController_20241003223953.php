@@ -395,7 +395,7 @@ class DemandeController extends BaseController
 
         if ($form->isSubmitted()) {
             $response = [];
-            $redirect = $this->generateUrl('app_config_demande_index');
+            $redirect = $this->generateUrl('app_config_audience_index');
 
 
             if ($form->isValid()) {
