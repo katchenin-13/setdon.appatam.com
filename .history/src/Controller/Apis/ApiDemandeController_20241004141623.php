@@ -69,46 +69,10 @@ class ApiDemandeController extends ApiInterface
     #[Route('/justification_demande/{id}', name: 'api_demande_justification', methods: ['POST'])]
     #[OA\Tag(name: 'Demande')]
     #[Security(name: 'Bearer')]
-
-    public function justification(Request $request, DemandeRepository $demandeRepository ,$id)
+    public function justification(Request $request, DemandeRepository $demandeRepository, $id): JsonResponse
     {
         try {
-            $data = json_decode($request->getContent());
-            
-            $demande = $demandeRepository->find($id);
-            if ($demande != null) {
-            
-                $demande->setEtat($data->etat);
-                $demande->setJustification($data->justification);
-            
-                // On sauvegarde en base
-                $demandeRepository->save($demande, true);
-                // On retourne la confirmation
-               
-                $response =$this->json([
-                    'statut' => 200,
-                    'message' => 'Demande mise à jour avec succès',
-                   
-                ], Response::HTTP_OK);
-                return $response;
-             
-            }else{
-                $response = $this->json([
-                    'statut' => 404,
-                    'message' => 'Demande non trouvée',
-                   
-                ], Response::HTTP_NOT_FOUND);
-                return $response;
-            }
-        } catch (\Exception $exception) {
-             $response = $this->json([
-                'statut' => 500,
-                 'message' => 'Erreur : ' . $exception->getMessage()
-             ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            
-            return $response;
-        }
-       return $response;
-    }
-     
-}
+            // Décoder les données reçues
+            $data = json_decode($request->getContent(), true);
+
+            // Chercher la demande correspondante

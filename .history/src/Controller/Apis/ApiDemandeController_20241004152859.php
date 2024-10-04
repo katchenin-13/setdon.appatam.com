@@ -104,7 +104,7 @@ class ApiDemandeController extends ApiInterface
              $response = $this->json([
                 'statut' => 500,
                  'message' => 'Erreur : ' . $exception->getMessage()
-             ], Response::HTTP_INTERNAL_SERVER_ERROR);
+             ], Response::HTTP_INTERNAL_SERVER_ERROR)
             
             return $response;
         }

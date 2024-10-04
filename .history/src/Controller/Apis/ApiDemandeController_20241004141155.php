@@ -66,49 +66,29 @@ class ApiDemandeController extends ApiInterface
     }
 
 
-    #[Route('/justification_demande/{id}', name: 'api_demande_justification', methods: ['POST'])]
+    #[Route('/api/demandes/{id}/justification', name: 'api_gestion_demande_justification', methods: ['POST'])]
     #[OA\Tag(name: 'Demande')]
-    #[Security(name: 'Bearer')]
-
-    public function justification(Request $request, DemandeRepository $demandeRepository ,$id)
+    public function justification(Request $request, Demande $demande, DemandeRepository $demandeRepository): JsonResponse
     {
-        try {
-            $data = json_decode($request->getContent());
-            
-            $demande = $demandeRepository->find($id);
-            if ($demande != null) {
-            
-                $demande->setEtat($data->etat);
-                $demande->setJustification($data->justification);
-            
-                // On sauvegarde en base
-                $demandeRepository->save($demande, true);
-                // On retourne la confirmation
-               
-                $response =$this->json([
-                    'statut' => 200,
-                    'message' => 'Demande mise à jour avec succès',
-                   
-                ], Response::HTTP_OK);
-                return $response;
-             
-            }else{
-                $response = $this->json([
-                    'statut' => 404,
-                    'message' => 'Demande non trouvée',
-                   
-                ], Response::HTTP_NOT_FOUND);
-                return $response;
-            }
-        } catch (\Exception $exception) {
-             $response = $this->json([
-                'statut' => 500,
-                 'message' => 'Erreur : ' . $exception->getMessage()
-             ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            
-            return $response;
+        // Récupération des données
+        $data = json_decode($request->getContent(), true);
+
+        // Vérification de la présence des champs requis
+        if (!isset($data['justification']['etat']) || !isset($data['justification']['cause'])) {
+            return $this->json(['statut' => 0, 'message' => 'Champs état et cause requis'], Response::HTTP_BAD_REQUEST);
         }
-       return $response;
+
+        // Mettre à jour l'état et la justification de la demande
+        $demande->setEtat($data['justification']['etat']);
+        $demande->setJustification($data['justification']['cause']); // Assurez-vous que cette méthode existe dans l'entité Demande
+        $demandeRepository->save($demande, true); // Sauvegarder en base
+
+        // Réponse de succès
+        return $this->json([
+            'statut' => 1,
+            'message' => 'Opération effectuée avec succès',
+            'data' => true,
+        ]);
     }
      
 }

@@ -69,46 +69,42 @@ class ApiDemandeController extends ApiInterface
     #[Route('/justification_demande/{id}', name: 'api_demande_justification', methods: ['POST'])]
     #[OA\Tag(name: 'Demande')]
     #[Security(name: 'Bearer')]
-
-    public function justification(Request $request, DemandeRepository $demandeRepository ,$id)
+    public function justification(Request $request, DemandeRepository $demandeRepository, $id): JsonResponse
     {
         try {
-            $data = json_decode($request->getContent());
-            
+            // Décoder les données reçues
+            $data = json_decode($request->getContent(), true);
+
+            // Chercher la demande correspondante
             $demande = $demandeRepository->find($id);
-            if ($demande != null) {
-            
-                $demande->setEtat($data->etat);
-                $demande->setJustification($data->justification);
-            
-                // On sauvegarde en base
+
+            // Si la demande existe
+            if ($demande !== null) {
+                // Mettre à jour l'état et la justification
+                $demande->setEtat($data['etat']);
+                $demande->setJustification($data['justification']);
+
+                // Sauvegarder les modifications
                 $demandeRepository->save($demande, true);
-                // On retourne la confirmation
-               
-                $response =$this->json([
-                    'statut' => 200,
+
+                // Retourner la réponse de succès
+                return $this->json([
+                    'statut' => 1,
                     'message' => 'Demande mise à jour avec succès',
-                   
+                    'data' => $demande
                 ], Response::HTTP_OK);
-                return $response;
-             
-            }else{
-                $response = $this->json([
-                    'statut' => 404,
-                    'message' => 'Demande non trouvée',
-                   
+                dd($)
+            } else {
+                // Si la demande n'existe pas
+                return $this->json([
+                    'statut' => 0,
+                    'message' => 'Demande introuvable'
                 ], Response::HTTP_NOT_FOUND);
-                return $response;
             }
         } catch (\Exception $exception) {
-             $response = $this->json([
-                'statut' => 500,
-                 'message' => 'Erreur : ' . $exception->getMessage()
-             ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            
-            return $response;
+            $this->setMessage($exception->getMessage());
+            $response = $this->response(null);
         }
-       return $response;
     }
      
 }

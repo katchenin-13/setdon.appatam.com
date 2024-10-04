@@ -61,54 +61,96 @@ class ApiDemandeController extends ApiInterface
             $response = $this->response(null);
         }
 
+        // try {
+        //     $audiences = $demandeRepository->findAll();
+        //     $response = $this->responseNew($audiences, "group1");
+        // } catch (\Exception $exception) {
+        //     $this->setMessage($exception->getMessage());
+        //     $response = $this->response(null);
+        // }
+
+        // On envoie la réponse
 
         return $response;
     }
 
 
+   
+
+
+
+
+
+    #[Route('/create', name: 'api_demande_create', methods: ['POST'])]
+    #[OA\Tag(name: 'Demande')]
+    #[Security(name: 'Bearer')]
+    public function create(Request $request, DemandeRepository $demandeRepository)
+    {
+        try {
+            $data = json_decode($request->getContent());
+
+            $demande = $demandeRepository->findOneBy(array('code' => $data->code));
+            if ($demande == null) {
+                $demande = new Demande();
+                $demande->setMotif($data->code);
+                $demande->setCommunaute($data->libelle);
+
+                // On sauvegarde en base
+                $demandeRepository->add($demande, true);
+
+                // On retourne la confirmation
+                $response = $this->response($demande);
+            } else {
+                $this->setMessage("cette ressource existe deja en base");
+                $this->setStatusCode(300);
+                $response = $this->response(null);
+            }
+        } catch (\Exception $exception) {
+            $this->setMessage($exception->getMessage());
+            $response = $this->response(null);
+        }
+
+
+        return $response;
+    }
+
+
+
+ 
     #[Route('/justification_demande/{id}', name: 'api_demande_justification', methods: ['POST'])]
     #[OA\Tag(name: 'Demande')]
     #[Security(name: 'Bearer')]
 
-    public function justification(Request $request, DemandeRepository $demandeRepository ,$id)
+    public function justification(Request $request, DemandeRepository $demandeRepository ,$id): Response
     {
         try {
             $data = json_decode($request->getContent());
-            
             $demande = $demandeRepository->find($id);
             if ($demande != null) {
             
                 $demande->setEtat($data->etat);
                 $demande->setJustification($data->justification);
-            
+             
                 // On sauvegarde en base
                 $demandeRepository->save($demande, true);
+                
                 // On retourne la confirmation
-               
-                $response =$this->json([
-                    'statut' => 200,
-                    'message' => 'Demande mise à jour avec succès',
-                   
-                ], Response::HTTP_OK);
-                return $response;
+                $response = $this->response($demande);
              
-            }else{
-                $response = $this->json([
-                    'statut' => 404,
-                    'message' => 'Demande non trouvée',
-                   
-                ], Response::HTTP_NOT_FOUND);
-                return $response;
+            } else {
+                $this->setMessage("cette ressource est inexsitante");
+                $this->setStatusCode(300);
+                $response = $this->response(null);
             }
         } catch (\Exception $exception) {
-             $response = $this->json([
-                'statut' => 500,
-                 'message' => 'Erreur : ' . $exception->getMessage()
-             ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            
-            return $response;
+            $this->setMessage($exception->getMessage());
+            $response = $this->response(null);
         }
-       return $response;
+        return $response;
     }
-     
+    #[Route('/update/{id}', name: 'api_demande_update', methods: ['POST'])]
+    #[OA\Tag(name: 'Demande')]
+    #[Security(name: 'Bearer')]
+    
+   
 }

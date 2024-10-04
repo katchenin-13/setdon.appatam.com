@@ -93,20 +93,14 @@ class ApiDemandeController extends ApiInterface
                 return $response;
              
             }else{
-                $response = $this->json([
-                    'statut' => 404,
-                    'message' => 'Demande non trouvée',
-                   
+                return $this->json([
+                    'statut' => 0,
+                    'message' => 'Demande introuvable'
                 ], Response::HTTP_NOT_FOUND);
-                return $response;
             }
         } catch (\Exception $exception) {
-             $response = $this->json([
-                'statut' => 500,
-                 'message' => 'Erreur : ' . $exception->getMessage()
-             ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            
-            return $response;
+            $this->setMessage($exception->getMessage());
+            $response = $this->response(null);
         }
        return $response;
     }

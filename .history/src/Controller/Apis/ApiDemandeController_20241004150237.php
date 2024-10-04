@@ -74,7 +74,6 @@ class ApiDemandeController extends ApiInterface
     {
         try {
             $data = json_decode($request->getContent());
-            
             $demande = $demandeRepository->find($id);
             if ($demande != null) {
             
@@ -83,30 +82,21 @@ class ApiDemandeController extends ApiInterface
             
                 // On sauvegarde en base
                 $demandeRepository->save($demande, true);
+                $data['data'] =   [
+                    'reference' => $data->getEtat(),
+                    'username' => $data->getUsername(),
+                    //"type" => "user",
+
+                ];
                 // On retourne la confirmation
-               
-                $response =$this->json([
-                    'statut' => 200,
-                    'message' => 'Demande mise à jour avec succès',
-                   
-                ], Response::HTTP_OK);
-                return $response;
+                $response = $this->response($demande);
+
+               // $response = $this->response($demande);
              
-            }else{
-                $response = $this->json([
-                    'statut' => 404,
-                    'message' => 'Demande non trouvée',
-                   
-                ], Response::HTTP_NOT_FOUND);
-                return $response;
-            }
+            } 
         } catch (\Exception $exception) {
-             $response = $this->json([
-                'statut' => 500,
-                 'message' => 'Erreur : ' . $exception->getMessage()
-             ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            
-            return $response;
+            $this->setMessage($exception->getMessage());
+            $response = $this->response(null);
         }
        return $response;
     }
