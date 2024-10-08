@@ -1,0 +1,97 @@
+{% block page_content %}
+{% form_theme form 'widget/fields-block.html.twig' %}
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Modification de l' Audience</h5>
+    <div class="btn btn-icon btn-sm  ms-2" data-bs-dismiss="modal" aria-label="Close">
+        <span class="svg-icon svg-icon-2x text-white">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)"
+                    fill="currentColor"></rect>
+                <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)"
+                    fill="currentColor"></rect>
+            </svg>
+        </span>
+    </div>
+</div>
+{{ form_start(form, {'attr': {'role':'form', 'class': 'form'}}) }}
+<div class="modal-body">
+    {{ include('_includes/ajax/response.html.twig') }}
+    {# {{ form_widget(form) }} #}
+        <p class="d-none">Workflow State: <span id="workflow-state">{{ etat|raw }}</span></p>
+    <div class="row">
+        <div class="col-md-9">{{ form_row(form.motif) }}</div>
+        <div class="col-md-3">{{ form_row(form.daterencontre) }}</div>
+        <div class="col-md-4">{{ form_row(form.communaute) }}</div>
+        <div class="col-md-4">{{ form_row(form.nomchef) }}</div>
+        <div class="col-md-4">{{ form_row(form.numero) }}</div>
+        <div class="col-md-6">{{ form_row(form.email)}}</div>
+        <div class="col-md-6">{{ form_row(form.nombreparticipant) }}</div>
+        <div class="col-md-12 justication ">{{ form_row(form.justification) }}</div>
+        <div class="col-md-12 ">{{ form_row(form.observation) }}</div>
+    </div> 
+
+    <div class="modal-footer">
+        {# {{ include('_includes/ajax/loader.html.twig') }} 
+        {{ form_widget(form.rejeter) }}#}
+      
+        <a href="{{ path('app_gestion_audience_justification',{'id':id})}}" class="btn btn-default rejeter"
+            data-bs-stacked-toggle="modal" data-bs-stacked-modal="#exampleModalSizeLg22">
+            Rejeter
+        </a>
+        
+        {{ form_widget(form.accorder) }}
+
+    </div>
+    {{ form_end(form) }}
+    {% endblock %}
+
+    {% block javascripts_inline %}
+    <script>
+         
+          $(function () {
+              /* $('#exampleModalSizeLg2').on('shown.bs.modal', function () {
+                            $('.valider').hide();
+                             // Code à exécuter lorsque la modal est affichée
+                             $('#monBouton').text('Le bouton a été modifié après l\'affichage de la modal');
+                         });*/
+
+              var etat = JSON.parse(document.getElementById('workflow-state').textContent);
+              if (etat == 'audience_rejeter') {
+                  $('.rejeter').hide();
+                  $('.justication').attr('disabled', 'disabled');
+              }
+              if (etat == 'audience_valider') {
+                  $('.rejeter').hide()
+                  $('.justication').hide();
+              } 
+
+                init_select2('select');
+                var elements = Array.from(document.querySelectorAll("[data-bs-stacked-modal]"));
+
+                if (elements && elements.length > 0) {
+                    elements.forEach((element) => {
+                        if (element.getAttribute("data-kt-initialized") === "1") {
+                            return;
+                        }
+
+                        const url = element.getAttribute('href');
+                        element.setAttribute("data-kt-initialized", "1");
+
+
+                        element.addEventListener("click", function (e) {
+                            e.preventDefault();
+
+                            const modalEl = document.querySelector(this.getAttribute("data-bs-stacked-modal"));
+
+                            if (modalEl) {
+                                const modal = new bootstrap.Modal(modalEl);
+                                modal.show(element);
+                            }
+                        });
+                    });
+                }
+            })
+
+        
+    </script>
+    {% endblock %}
