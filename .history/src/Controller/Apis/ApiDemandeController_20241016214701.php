@@ -89,7 +89,11 @@ class ApiDemandeController extends ApiInterface
                     'message' => 'Demande mise à jour avec succès',
                    
                 ], Response::HTTP_OK);
-      
+                dd($this->json([
+                    'statut' => 200,
+                    'message' => 'Demande mise à jour avec succès',
+
+                ], Response::HTTP_OK));
                 return $response;
              
             }else{

@@ -115,7 +115,7 @@ class ApiAudianceController extends ApiInterface
                     'statut' => 500,
                     'message' => 'Erreur : ' . $exception->getMessage()
                 ]);
- 
+
             return $response;
         }
         return $response;
